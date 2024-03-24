@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
+	"unsafe"
 )
 
 func main() {
@@ -71,4 +72,7 @@ func main() {
 
 	fmt.Println(point1) // {1 2}
 	fmt.Println(point2) // {2 2}
+
+	type empty struct{}
+	fmt.Println(unsafe.Sizeof(empty{})) // 0
 }
