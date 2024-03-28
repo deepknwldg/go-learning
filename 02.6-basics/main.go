@@ -99,4 +99,47 @@ func main() {
 
 	s3 = append(s3, "d", "e")
 	fmt.Println(s3)
+
+	// maps
+	var m map[string]int
+	fmt.Println(m, m == nil)
+	// m["test"] = 1 // panic: assignment to entry in nil map
+
+	var m2 = make(map[string]int)
+	m2["test"] = 1
+	fmt.Println(m2)
+
+	// map literal
+	var m3 = map[string]int{
+		"hi": 100,
+	}
+	fmt.Println(m3)
+
+	var m4 = map[string][]int{
+		"a": []int{10, 20},
+		"b": []int{30, 40},
+	}
+	fmt.Println(m4)
+
+	m4["c"] = []int{50, 60, 70}
+	fmt.Println(m4["c"])
+	fmt.Println(m4["d"], m4["d"] == nil)
+
+	value, ok := m4["d"]
+	if !ok {
+		fmt.Println("does not exist")
+	} else {
+		fmt.Println("key found", value)
+	}
+
+	delete(m4, "d")
+
+	for k, v := range m4 {
+		fmt.Printf("Key: %s, Value: %v\n", k, v)
+	}
+
+	m5 := m2
+	m5["new"] = 10
+	fmt.Println(m5, m2)
+
 }
