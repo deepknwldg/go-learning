@@ -5,6 +5,8 @@ import "fmt"
 func main() {
 	ranges()
 	shadowingVariables()
+	typeEmbedding()
+	valueReceivers()
 }
 
 // ranges
@@ -86,4 +88,42 @@ func applyTansformationsValid(n Node, ts []Transformation) ([]Node, error) {
 		steps = append(steps, n)
 	}
 	return steps, nil
+}
+
+// Встраиваемый тип.
+// Структура Wrapped и Node имеют одинаковые методы Name,
+// тут нужно вызывать явно указывая полный путь к методы через вызовы встриваемых полей,
+// иначе можно получить неожидаемый вызов метода.
+func typeEmbedding() {
+	v1 := Wrapper{Node{"123", 0}}
+	fmt.Println(v1.Name(), v1.Node.Name())
+	fmt.Println(v1.value, v1.Node.value)
+	fmt.Println(v1.Name())
+	fmt.Println(v1.Node.Name())
+}
+
+func (n Node) Name() string {
+	return n.value
+}
+
+type Wrapper struct { // когда структура встраивает другую структуру, она наследует все методы и поля встраиваемого типа
+	Node
+}
+
+func (w Wrapper) Name() string {
+	return "wrapped value: " + w.Node.value
+}
+
+// value receivers
+func valueReceivers() {
+	// func (n Node) Name() string {...} // Value receiver
+	// func (n *Node) Name() string {...} // Pointer receiver
+
+	n := Node{value: "my value"}
+	n.SetValue("new value")
+	fmt.Println(n)
+}
+
+func (n *Node) SetValue(value string) {
+	n.value = value
 }
