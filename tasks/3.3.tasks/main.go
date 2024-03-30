@@ -9,4 +9,5 @@ import (
 func main() {
 	fmt.Println(task1.Add(1))
 	fmt.Println(task2.Distance(52.2296756, 21.0122287, 52.406374, 16.9251681))
+	fmt.Println(task2.DistanceCompare(52.2296756, 21.0122287, 52.2296756, 21.0122287))
 }

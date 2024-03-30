@@ -19,3 +19,7 @@ func Distance(lat1, lon1 float32, lat2, lon2 float32) float32 {
 
 	return float32(distance)
 }
+
+func DistanceCompare(lat1, lon1 float32, lat2, lon2 float32) bool {
+	return lat1-lat2 == 0 && lon1-lon2 == 0
+}
