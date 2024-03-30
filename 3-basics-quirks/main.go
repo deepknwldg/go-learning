@@ -8,6 +8,7 @@ func main() {
 	typeEmbedding()
 	valueReceivers()
 	nilProblem()
+	stringsImmutable()
 }
 
 // ranges
@@ -144,4 +145,26 @@ func nilProblem() {
 	fmt.Println(len(m0k))
 	m0k["test"] = 1
 	fmt.Println(len(m0k))
+}
+
+// string immutable
+func stringsImmutable() {
+	s := "abc"
+	// s[1] = 'B' // cannot assign to s[1] (value of type byte)
+
+	//Чтобы обновить строку можно использовать slice-byte
+	sBytes := []byte(s)
+	sBytes[1] = 'B'
+	fmt.Println(string(sBytes))
+
+	// Лучше использовать slice-rune
+	sRunes := []rune(s)
+	sRunes[1] = 'B'
+	fmt.Println(string(sRunes))
+
+	s2 := "ß ß"
+	r2 := []rune(s2)
+	fmt.Println(string(r2)) // ß ß
+	r2[0] = 'A'
+	fmt.Println(string(r2)) // A ß
 }
