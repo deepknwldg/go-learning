@@ -9,6 +9,7 @@ func main() {
 	valueReceivers()
 	nilProblem()
 	stringsImmutable()
+	staleSlices()
 }
 
 // ranges
@@ -167,4 +168,25 @@ func stringsImmutable() {
 	fmt.Println(string(r2)) // ß ß
 	r2[0] = 'A'
 	fmt.Println(string(r2)) // A ß
+}
+
+// stale slices - Брошенные слайсы
+
+func staleSlices() {
+	s1 := []int{1, 2, 3}
+	fmt.Println(len(s1), cap(s1), s1) // 3 3 [1 2 3]
+
+	s2 := s1[1:]
+	fmt.Println(len(s2), cap(s2), s2) // 2 2 [2 3]
+
+	s2[0] = 100500
+
+	fmt.Println(s1) // [1 100500 3]
+	fmt.Println(s2) // [100500 3]
+
+	s2 = append(s2, 4)
+	s2[0] = 10
+
+	fmt.Println(s1) // [1 100500 3]
+	fmt.Println(s2) // [10 3 4]
 }
