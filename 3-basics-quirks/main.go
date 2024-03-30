@@ -7,6 +7,7 @@ func main() {
 	shadowingVariables()
 	typeEmbedding()
 	valueReceivers()
+	nilProblem()
 }
 
 // ranges
@@ -126,4 +127,21 @@ func valueReceivers() {
 
 func (n *Node) SetValue(value string) {
 	n.value = value
+}
+
+// nil
+func nilProblem() {
+	var slice []int
+	fmt.Println(len(slice))
+	slice = append(slice, 100500)
+	fmt.Println(len(slice))
+
+	var m map[string]int
+	fmt.Println(len(m))
+	// m["test"] = 1
+
+	m0k := make(map[string]int)
+	fmt.Println(len(m0k))
+	m0k["test"] = 1
+	fmt.Println(len(m0k))
 }
