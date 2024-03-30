@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"unicode/utf8"
 )
 
 func main() {
@@ -142,4 +143,23 @@ func main() {
 	m5["new"] = 10
 	fmt.Println(m5, m2)
 
+	// runes
+	word := `Straße`
+
+	fmt.Println(len(word))                    // 7
+	fmt.Println(word[:2])                     // St
+	fmt.Println(word[4:])                     // ße
+	fmt.Println(word[4:6])                    // ß
+	fmt.Println(word[5:])                     // ?e
+	fmt.Println(utf8.RuneCountInString(word)) //6
+
+	for pos, char := range word {
+		fmt.Printf("character %c starts at byte position %d\n", char, pos)
+		// character S starts at byte position 0
+		// character t starts at byte position 1
+		// character r starts at byte position 2
+		// character a starts at byte position 3
+		// character ß starts at byte position 4
+		// character e starts at byte position 6
+	}
 }
