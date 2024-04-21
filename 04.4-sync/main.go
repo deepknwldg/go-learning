@@ -22,6 +22,7 @@ func main() {
 	waitGroupExampleCopy()
 	mutexExample()
 	rwMutexExample()
+	syncMapExample()
 }
 
 func waitGroupExample() {
@@ -104,4 +105,32 @@ func rwMutexExample() {
 
 	wg.Wait()
 	fmt.Printf("Result is %d\n", c.GetValue())
+}
+
+func syncMapExample() {
+	var wg sync.WaitGroup
+	var m sync.Map
+	// m2 := m // нельзя
+
+	wg.Add(10)
+
+	for i := 1; i <= 5; i++ {
+		go func(k int) {
+			v := fmt.Sprintf("value #{k}")
+
+			fmt.Println("Writing: ", v)
+			m.Store(k, v)
+			wg.Done()
+		}(i)
+	}
+
+	for i := 1; i <= 5; i++ {
+		go func(k int) {
+			v, _ := m.Load(k)
+			fmt.Println("Reading: ", v)
+			wg.Done()
+		}(i)
+	}
+
+	wg.Wait()
 }
