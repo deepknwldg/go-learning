@@ -21,7 +21,7 @@ func main() {
 	waitGroupExample()
 	waitGroupExampleCopy()
 	mutexExample()
-
+	rwMutexExample()
 }
 
 func waitGroupExample() {
@@ -90,4 +90,18 @@ func (c *RWCounter) GetValue() int {
 	defer c.m.RUnlock()
 
 	return v
+}
+
+func rwMutexExample() {
+	var wg sync.WaitGroup
+
+	c := RWCounter{}
+
+	for i := 1; i <= 100; i++ {
+		wg.Add(1)
+		go c.Update(10, &wg)
+	}
+
+	wg.Wait()
+	fmt.Printf("Result is %d\n", c.GetValue())
 }
