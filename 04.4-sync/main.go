@@ -23,6 +23,7 @@ func main() {
 	mutexExample()
 	rwMutexExample()
 	syncMapExample()
+	raceExample()
 }
 
 func waitGroupExample() {
