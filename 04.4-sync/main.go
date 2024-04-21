@@ -33,3 +33,12 @@ func waitGroupExample() {
 
 	wg.Wait()
 }
+
+func waitGroupExampleCopy() {
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+	go processWithWg(&wg) // нужно передавать через указатель
+
+	wg.Wait()
+}
