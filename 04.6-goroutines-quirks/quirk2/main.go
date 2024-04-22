@@ -1,10 +1,19 @@
 package main
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
-
 	s := First("test", Search, Search)
+	fmt.Println(s)
+
+	s2 := FirstWithSelect("test", Search, Search)
+	fmt.Println(s2)
+
+	s3 := FirstWithSelect("test", Search, Search)
+	fmt.Println(s3)
 }
 
 func Search(query string) string {
