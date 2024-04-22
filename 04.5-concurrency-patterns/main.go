@@ -33,6 +33,30 @@ func main() {
 	for value := range out1 {
 		fmt.Println("pipeline value:", value)
 	}
+
+	// worker pool
+	const totalJobs = 10
+	const totalWorkers = 5
+	jobs := make(chan int, totalJobs)
+	results := make(chan int, totalJobs)
+
+	for w := 1; w <= totalWorkers; w++ {
+		go worker(w, jobs, results)
+	}
+
+	// send jobs
+	for j := 1; j <= totalJobs; j++ {
+		jobs <- j
+	}
+
+	close(jobs)
+
+	// Receive results
+	for a := 1; a <= totalJobs; a++ {
+		<-results
+	}
+
+	close(results)
 }
 
 func generator() <-chan int {
@@ -118,4 +142,25 @@ func square(in <-chan int) <-chan int {
 	}()
 
 	return out
+}
+
+func worker(id int, jobs <-chan int, results chan<- int) {
+	var wg sync.WaitGroup
+
+	for j := range jobs {
+		wg.Add(1)
+
+		go func(job int) {
+			defer wg.Done()
+
+			fmt.Printf("Worker %v started job %v\n", id, job)
+
+			// Do work and send result
+			result := job * 2
+			results <- result
+			fmt.Printf("Worker %v finished job %v\n", id, job)
+		}(j)
+	}
+
+	wg.Wait()
 }
