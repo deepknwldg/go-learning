@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"sync"
 )
 
@@ -21,6 +22,16 @@ func main() {
 
 	for value := range out {
 		fmt.Println("fan in value:", value)
+	}
+
+	// pipeline
+	pipeIn := generatorWork([]int{0, 1, 2, 3, 4, 5, 6, 7, 8})
+
+	out1 := filter(pipeIn)
+	out1 = square(out1)
+
+	for value := range out1 {
+		fmt.Println("pipeline value:", value)
 	}
 }
 
@@ -73,6 +84,37 @@ func fanIn(inputs ...<-chan int) <-chan int {
 	go func() {
 		wg.Wait()
 		close(out)
+	}()
+
+	return out
+}
+
+func filter(in <-chan int) <-chan int {
+	out := make(chan int)
+
+	go func() {
+		defer close(out)
+
+		for i := range in {
+			if i%2 == 0 {
+				out <- i
+			}
+		}
+	}()
+
+	return out
+}
+
+func square(in <-chan int) <-chan int {
+	out := make(chan int)
+
+	go func() {
+		defer close(out)
+
+		for i := range in {
+			value := math.Pow(float64(i), 2)
+			out <- int(value)
+		}
 	}()
 
 	return out
